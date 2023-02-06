@@ -1,14 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './user';
+import { PrismaClient } from '@prisma/client';
+import * as O from 'fp-ts/Option';
 
+const prisma = new PrismaClient();
 @Injectable()
 export class AppService {
-  getUser(): User {
+  async getUser(): Promise<any> {
     // read from db
-    const user = new User();
-    user.name = 'junsuk';
-    user.age = 20;
-    user.phone = '01087706498';
+    const user = await prisma.user.findUnique({
+      where: {
+        id: 0,
+      },
+    });
+
+    console.log(user);
 
     return user;
   }
