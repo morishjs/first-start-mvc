@@ -7,14 +7,11 @@ const prisma = new PrismaClient();
 @Injectable()
 export class AppService {
   async getUser(): Promise<any> {
-    // read from db
     const user = await prisma.user.findUnique({
       where: {
         id: 0,
       },
     });
-
-    console.log(user);
 
     return user;
   }
