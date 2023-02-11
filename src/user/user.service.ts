@@ -25,4 +25,19 @@ export class UserService {
 
     return O.none;
   }
+
+  async createUser(user: User & { email: string }): Promise<O.Option<number>> {
+    const data = await prisma.user.create({
+      data: user,
+      select: {
+        id: true,
+      },
+    });
+
+    if (data) {
+      return O.some(data.id);
+    }
+
+    return O.none;
+  }
 }

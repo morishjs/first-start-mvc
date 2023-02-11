@@ -1,4 +1,4 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Controller, Get, Post, Render } from '@nestjs/common';
 import { User } from '../user';
 import { UserService } from './user.service';
 import * as O from 'fp-ts/Option';
@@ -18,5 +18,19 @@ export class UserController {
     }
   }
 
-  //TODO: createUser 생성
+  @Post('/create-user')
+  async createUser(): Promise<{ id: number }> {
+    const userId = await this.userService.createUser({
+      name: 'jueun2',
+      age: 20,
+      phone: '01095996425',
+      email: 'juepark42@gmail.com',
+    });
+
+    if (O.isSome(userId)) {
+      return { id: userId.value };
+    } else {
+      return { id: null };
+    }
+  }
 }
