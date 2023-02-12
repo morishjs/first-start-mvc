@@ -22,7 +22,7 @@ export class UserService {
     });
 
     if (data) {
-      return O.some(data as User);
+      return O.some(data);
     }
 
     return O.none;
