@@ -1,16 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable} from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { User } from '../user';
 import * as O from 'fp-ts/Option';
 import _ from 'lodash';
+import { CreateUserDto } from './dto/create-user.dto';
+import {isNil} from "@nestjs/common/utils/shared.utils";
 
 const prisma = new PrismaClient();
 @Injectable()
 export class UserService {
-  async findUser(id: number): Promise<O.Option<User>> {
+  async findUser(id: string): Promise<O.Option<User>> {
     const data = await prisma.user.findUnique({
       where: {
-        id,
+        id: Number(id),
       },
       select: {
         phone: true,
@@ -26,7 +28,7 @@ export class UserService {
     return O.none;
   }
 
-  async createUser(user: User & { email: string }): Promise<O.Option<number>> {
+  async createUser(user: CreateUserDto): Promise<O.Option<number>> {
     const data = await prisma.user.create({
       data: user,
       select: {
