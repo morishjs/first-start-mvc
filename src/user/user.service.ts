@@ -3,26 +3,9 @@ import { Prisma, PrismaClient, User } from '@prisma/client';
 import * as O from 'fp-ts/Option';
 import _ from 'lodash';
 import { CreateUserDto } from './dto/create-user.dto';
-import {
-  is,
-  size,
-  define,
-  refine,
-  object,
-  string,
-  number,
-  assert,
-} from 'superstruct';
+import { object, string, number } from 'yup';
 
 const prisma = new PrismaClient();
-
-// Runtime validation
-const Signup = object({
-  name: string(),
-  age: number(),
-  phone: string(),
-  email: size(string(), 1, 5), // TODO: create custom email validation
-});
 
 @Injectable()
 export class UserService {
@@ -41,11 +24,19 @@ export class UserService {
   }
 
   async createUser(user: CreateUserDto): Promise<O.Option<number>> {
+    const userSchema = object({
+      name: string(),
+      age: number().required().positive().integer(),
+      email: string().required().email(),
+      phone: string(),
+    });
+
     try {
-      assert(user, Signup);
+      await userSchema.validate(user);
     } catch (e) {
-      throw new UnprocessableEntityException('something went wrong');
-      // TODO: throw more specific error message
+      throw new UnprocessableEntityException(
+        e.errors[0] ?? 'Validation failed',
+      );
     }
 
     try {
