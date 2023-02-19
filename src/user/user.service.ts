@@ -1,10 +1,8 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { User } from '../user';
+import { Injectable } from '@nestjs/common';
+import { PrismaClient, User } from '@prisma/client';
 import * as O from 'fp-ts/Option';
 import _ from 'lodash';
 import { CreateUserDto } from './dto/create-user.dto';
-import {isNil} from "@nestjs/common/utils/shared.utils";
 
 const prisma = new PrismaClient();
 @Injectable()
@@ -13,11 +11,6 @@ export class UserService {
     const data = await prisma.user.findUnique({
       where: {
         id: Number(id),
-      },
-      select: {
-        phone: true,
-        age: true,
-        name: true,
       },
     });
 
