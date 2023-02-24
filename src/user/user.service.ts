@@ -1,9 +1,8 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Prisma, PrismaClient, User } from '@prisma/client';
 import * as O from 'fp-ts/Option';
-import _ from 'lodash';
+import { userSchema } from 'src/validation-schema/user';
 import { CreateUserDto } from './dto/create-user.dto';
-import { object, string, number } from 'yup';
 
 const prisma = new PrismaClient();
 
@@ -24,15 +23,8 @@ export class UserService {
   }
 
   async createUser(user: CreateUserDto): Promise<O.Option<number>> {
-    const userSchema = object({
-      name: string(),
-      age: number().required().positive().integer(),
-      email: string().required().email(),
-      phone: string(),
-    });
-
     try {
-      await userSchema.validate(user);
+      await userSchema.validate(user, { strict: true });
     } catch (e) {
       throw new UnprocessableEntityException(
         e.errors[0] ?? 'Validation failed',
