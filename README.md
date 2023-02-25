@@ -21,3 +21,17 @@
          NotFound
        };
        ```
+
+#### 프로젝트 설정 방법
+1. docker-compose.yml 파일이 있는 디렉토리에서 다음 명령어를 실행합니다.
+   ```sh
+   docker-compose up -d
+   ```
+2. primsa 설정
+   - .env 파일에 다음 내용을 추가해주세요
+     - ```
+        DATABASE_URL="postgresql://postgres:postgres@localhost:5433/mvc_start_db?schema=public"
+        ```
+   - 다음 명령어를 차례로 실행해주세요.
+       - npx prisma migrate dev
+       - npx prisma generate
