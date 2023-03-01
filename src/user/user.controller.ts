@@ -8,11 +8,11 @@ import {
   Post,
   Render,
 } from '@nestjs/common';
-import { User } from '../user';
 import { UserService } from './user.service';
 import * as O from 'fp-ts/Option';
 import { CreateUserDto } from './dto/create-user.dto';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { User } from '@prisma/client';
 @Controller()
 export class UserController {
   constructor(private readonly userService: UserService) {}
