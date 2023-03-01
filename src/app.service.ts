@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, User } from '@prisma/client';
-import * as O from 'fp-ts/Option';
-import { UserService } from './user/user.service';
+import { User } from '@prisma/client';
+import { PrismaService } from './prisma.service';
 
-const prisma = new PrismaClient();
 @Injectable()
 export class AppService {
+  constructor(private prisma: PrismaService) {}
+
   async getUser(): Promise<User> {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: {
         id: 0,
       },
@@ -17,7 +17,7 @@ export class AppService {
   }
 
   async getUsers(): Promise<User[]> {
-    const users = await prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       take: 2,
     });
 

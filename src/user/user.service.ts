@@ -1,15 +1,16 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import * as O from 'fp-ts/Option';
+import { PrismaService } from 'src/prisma.service';
 import { userSchema } from 'src/validation-schema/user';
 import { CreateUserDto } from './dto/create-user.dto';
 
-const prisma = new PrismaClient();
-
 @Injectable()
 export class UserService {
+  constructor(private prisma: PrismaService) {}
+
   async findUser(id: string): Promise<O.Option<User>> {
-    const data = await prisma.user.findUnique({
+    const data = await this.prisma.user.findUnique({
       where: {
         id: Number(id),
       },
@@ -32,7 +33,7 @@ export class UserService {
     }
 
     try {
-      const data = await prisma.user.create({
+      const data = await this.prisma.user.create({
         data: user,
         select: {
           id: true,
