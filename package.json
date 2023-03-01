@@ -23,9 +23,12 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.9.0",
+    "fp-ts": "^2.13.1",
     "hbs": "^4.2.0",
+    "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.5.5"
+    "rxjs": "^7.5.5",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
